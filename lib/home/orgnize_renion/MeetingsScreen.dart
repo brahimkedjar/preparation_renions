@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MeetingsScreen extends StatefulWidget {
+  const MeetingsScreen({super.key});
+
   @override
   _MeetingsScreenState createState() => _MeetingsScreenState();
 }
@@ -36,7 +38,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
         _preparationMeetings = [];
         _termineesMeetings = [];
 
-        allMeetings.forEach((meeting) {
+        for (var meeting in allMeetings) {
           final DateTime meetingDate = DateTime.parse(meeting['date']);
 
           if (meetingDate.isAfter(currentDate)) {
@@ -48,7 +50,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
           } else {
             _termineesMeetings.add(meeting);
           }
-        });
+        }
       });
     } else {
       throw Exception('Failed to fetch meetings');
@@ -87,7 +89,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meetings'),
+        title: const Text('Meetings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -100,7 +102,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                 _meetings.map<Widget>((meeting) => _buildMeetingCard(meeting)).toList(),
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(
               child: _buildMeetingCategory(
                 'En Préparation',
@@ -113,13 +115,13 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                           return StatefulBuilder(
                             builder: (BuildContext context, StateSetter setState) {
                               return AlertDialog(
-                                title: Text('Ajouter une réunion de préparation'),
+                                title: const Text('Ajouter une réunion de préparation'),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     DropdownButtonFormField<String>(
                                       value: _selectedMeetingType,
-                                      items: [
+                                      items: const [
                                         DropdownMenuItem(value: 'Conseil d’administration', child: Text('Conseil d’administration')),
                                         DropdownMenuItem(value: 'Assemblée générale ordinaire', child: Text('Assemblée générale ordinaire')),
                                         DropdownMenuItem(value: 'Assemblée générale extraordinaire', child: Text('Assemblée générale extraordinaire')),
@@ -130,12 +132,12 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                                           _selectedMeetingType = value;
                                         });
                                       },
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                         hintText: 'Sélectionner un type',
                                       ),
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     InkWell(
                                       onTap: () async {
                                         final DateTime? picked = await showDatePicker(
@@ -159,7 +161,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                                         alignment: Alignment.center,
                                         child: Text(
                                           '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                                          style: TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16),
                                         ),
                                       ),
                                     ),
@@ -171,13 +173,13 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                                       _addPreparationMeeting(_selectedMeetingType!, '${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}');
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Enregistrer'),
+                                    child: const Text('Enregistrer'),
                                   ),
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Annuler'),
+                                    child: const Text('Annuler'),
                                   ),
                                 ],
                               );
@@ -186,21 +188,21 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                         },
                       );
                     },
-                    child: Text('Ajouter', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Text('Ajouter', style: TextStyle(color: Colors.white)),
                   ),
-                  SizedBox(height: 10),
-                ]..addAll(_preparationMeetings.map<Widget>((meeting) => _buildMeetingCard(meeting)).toList()),
+                  const SizedBox(height: 10), ..._preparationMeetings.map<Widget>((meeting) => _buildMeetingCard(meeting)),
+                ],
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(
               child: _buildMeetingCategory(
                 'En Cours',
                 _enCoursMeetings.map<Widget>((meeting) => _buildMeetingCard(meeting)).toList(),
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(
               child: _buildMeetingCategory(
                 'Terminées',
@@ -221,10 +223,10 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
           title,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: _getCategoryColor(title)),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Expanded(
           child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => Divider(),
+            separatorBuilder: (BuildContext context, int index) => const Divider(),
             itemCount: meetings.length,
             itemBuilder: (BuildContext context, int index) {
               return meetings[index];
@@ -256,7 +258,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
       child: ListTile(
         title: Text(
           meeting['title'],
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,11 +266,11 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
             Text(meeting['date']),
             Text(
               'Time: ${meeting['time']}',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
               'Location: ${meeting['location']}',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),

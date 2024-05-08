@@ -4,10 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,12 +18,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ParticipantVotesPage(),
+      home: const ParticipantVotesPage(),
     );
   }
 }
 
 class ParticipantVotesPage extends StatefulWidget {
+  const ParticipantVotesPage({super.key});
+
   @override
   _ParticipantVotesPageState createState() => _ParticipantVotesPageState();
 }
@@ -76,7 +80,7 @@ class _ParticipantVotesPageState extends State<ParticipantVotesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Participant Votes'),
+        title: const Text('Participant Votes'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -92,7 +96,7 @@ class _ParticipantVotesPageState extends State<ParticipantVotesPage> {
 
                   return Card(
                     elevation: 4,
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -100,14 +104,14 @@ class _ParticipantVotesPageState extends State<ParticipantVotesPage> {
                         children: [
                           Text(
                             'Title: ${vote['title']}',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                          SizedBox(height: 8),
-                          Text('Description: ${vote['description']}', style: TextStyle(fontSize: 16)),
-                          SizedBox(height: 8),
-                          Text('Closing Date: ${vote['closing_date']}', style: TextStyle(fontSize: 16)),
-                          SizedBox(height: 16),
-                          Text('Options:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          const SizedBox(height: 8),
+                          Text('Description: ${vote['description']}', style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 8),
+                          Text('Closing Date: ${vote['closing_date']}', style: const TextStyle(fontSize: 16)),
+                          const SizedBox(height: 16),
+                          const Text('Options:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: options.map<Widget>((option) {
@@ -123,7 +127,7 @@ class _ParticipantVotesPageState extends State<ParticipantVotesPage> {
                                         });
                                       },
                                     ),
-                                    Text(option, style: TextStyle(fontSize: 16)),
+                                    Text(option, style: const TextStyle(fontSize: 16)),
                                   ],
                                 );
                               } else if (option is Map) {
@@ -139,14 +143,14 @@ class _ParticipantVotesPageState extends State<ParticipantVotesPage> {
                                         });
                                       },
                                     ),
-                                    Text(optionValue, style: TextStyle(fontSize: 16)),
+                                    Text(optionValue, style: const TextStyle(fontSize: 16)),
                                   ],
                                 );
                               }
                               return Container();
                             }).toList(),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: () {
                               if (vote['selected_option'] != null) {
@@ -155,7 +159,7 @@ class _ParticipantVotesPageState extends State<ParticipantVotesPage> {
                                 print('Please select an option');
                               }
                             },
-                            child: Text('Vote', style: TextStyle(fontSize: 18)),
+                            child: const Text('Vote', style: TextStyle(fontSize: 18)),
                           ),
                         ],
                       ),

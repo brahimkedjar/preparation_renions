@@ -379,7 +379,7 @@ _selectedDocumentConvocation != null ? Text('Selected Convocation Document: $_se
                 // Navigate to a new page to show the meetings
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MeetingsScreen()),
+                  MaterialPageRoute(builder: (context) => const MeetingsScreen()),
                 );
               },
               child: const Text('Voir les réunions'),

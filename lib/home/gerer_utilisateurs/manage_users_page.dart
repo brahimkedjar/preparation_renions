@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,13 +16,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ManageUsersPage(),
+      home: const ManageUsersPage(),
     );
   }
 }
 
 class ManageUsersPage extends StatefulWidget {
-  const ManageUsersPage({Key? key}) : super(key: key);
+  const ManageUsersPage({super.key});
 
   @override
   _ManageUsersPageState createState() => _ManageUsersPageState();
@@ -67,10 +69,10 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Manage Users'),
+        title: const Text('Manage Users'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: _buildUserForm(),
@@ -82,7 +84,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
             MaterialPageRoute(builder: (context) => UsersListPage(users: _users)),
           );
         },
-        child: Icon(Icons.people),
+        child: const Icon(Icons.people),
       ),
     );
   }
@@ -91,47 +93,47 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Create New User',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         TextFormField(
           controller: _nameController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Name',
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         TextFormField(
           controller: _prenameController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Prename',
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         TextFormField(
           controller: _emailController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Email',
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         TextFormField(
           controller: _passwordController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Password',
             border: OutlineInputBorder(),
           ),
           obscureText: true,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         ElevatedButton(
           onPressed: _addUser,
-          child: Text('Add User'),
+          child: const Text('Add User'),
         ),
       ],
     );
@@ -214,13 +216,13 @@ class User {
 class UsersListPage extends StatelessWidget {
   final List<User> users;
 
-  const UsersListPage({Key? key, required this.users}) : super(key: key);
+  const UsersListPage({super.key, required this.users});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User List'),
+        title: const Text('User List'),
       ),
       body: Center(
         child: Padding(
@@ -228,18 +230,18 @@ class UsersListPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Existing Users',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 child: SingleChildScrollView(
                   child: DataTable(
                     columnSpacing: 20,
                     headingRowColor: MaterialStateColor.resolveWith((states) => Colors.blue[200]!),
                     dataRowColor: MaterialStateColor.resolveWith((states) => Colors.blue[50]!),
-                    columns: [
+                    columns: const [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('Name')),
                       DataColumn(label: Text('Prename')),

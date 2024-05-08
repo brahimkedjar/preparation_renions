@@ -6,17 +6,17 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateVotePage extends StatefulWidget {
-  const CreateVotePage({Key? key}) : super(key: key);
+  const CreateVotePage({super.key});
 
   @override
   _CreateVotePageState createState() => _CreateVotePageState();
 }
 
 class _CreateVotePageState extends State<CreateVotePage> {
-  List<String> _selectedParticipants = [];
+  final List<String> _selectedParticipants = [];
   DateTime _closingDate = DateTime.now();
   List<Map<String, dynamic>>? _participantsList;
-  List<Map<String, dynamic>> _optionsWithKeys = [];
+  final List<Map<String, dynamic>> _optionsWithKeys = [];
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -85,7 +85,7 @@ class _CreateVotePageState extends State<CreateVotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create a Vote'),
+        title: const Text('Create a Vote'),
       ),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,41 +97,41 @@ class _CreateVotePageState extends State<CreateVotePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Title',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextFormField(
                       controller: _titleController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter vote title',
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Description',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextFormField(
                       controller: _descriptionController,
                       maxLines: 3,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter vote description',
                       ),
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Select Options',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: _optionsWithKeys.length,
@@ -145,12 +145,12 @@ class _CreateVotePageState extends State<CreateVotePage> {
                               });
                             },
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               hintText: 'Option ${index + 1}',
                             ),
                           ),
                           trailing: IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
+                            icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
                               setState(() {
                                 _optionsWithKeys.removeAt(index);
@@ -160,20 +160,20 @@ class _CreateVotePageState extends State<CreateVotePage> {
                         );
                       },
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: TextFormField(
                             controller: _newOptionController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'New Option',
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.add, color: Colors.green),
+                          icon: const Icon(Icons.add, color: Colors.green),
                           onPressed: () {
                             setState(() {
                               _optionsWithKeys.add({
@@ -188,30 +188,30 @@ class _CreateVotePageState extends State<CreateVotePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     FutureBuilder<List<Map<String, dynamic>>>(
                       future: _fetchParticipants(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else if (snapshot.hasData) {
                           return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Select Participants',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         DropdownButton<String>(
           isExpanded: true,
-          hint: Text('Select participants'),
+          hint: const Text('Select participants'),
           value: _selectedParticipants.isNotEmpty
               ? _selectedParticipants.first
               : null,
@@ -233,15 +233,15 @@ class _CreateVotePageState extends State<CreateVotePage> {
             );
           }).toList(),
         ),
-        SizedBox(height: 16),
-        Text(
+        const SizedBox(height: 16),
+        const Text(
           'Selected Participants:',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Wrap(
           spacing: 8.0,
           children: _selectedParticipants.map<Widget>((selectedId) {
@@ -264,44 +264,44 @@ class _CreateVotePageState extends State<CreateVotePage> {
       ],
     );
                         } else {
-                          return Text('No participants found');
+                          return const Text('No participants found');
                         }
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
                         _saveVote(); // Call function to save vote
                       },
-                      child: Text('Save Vote'),
+                      child: const Text('Save Vote'),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: [
-                          Icon(Icons.calendar_today, color: Colors.blue),
-                          SizedBox(width: 16),
+                          const Icon(Icons.calendar_today, color: Colors.blue),
+                          const SizedBox(width: 16),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Vote Closing Date:',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
-                                '${DateFormat('dd/MM/yyyy hh:mm a').format(_closingDate)}',
-                                style: TextStyle(fontSize: 18),
+                                DateFormat('dd/MM/yyyy hh:mm a').format(_closingDate),
+                                style: const TextStyle(fontSize: 18),
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           ElevatedButton.icon(
                             onPressed: () async {
                               final selectedDateTime =
@@ -312,8 +312,8 @@ class _CreateVotePageState extends State<CreateVotePage> {
                                 });
                               }
                             },
-                            icon: Icon(Icons.edit),
-                            label: Text('Change'),
+                            icon: const Icon(Icons.edit),
+                            label: const Text('Change'),
                           ),
                         ],
                       ),
@@ -323,14 +323,14 @@ class _CreateVotePageState extends State<CreateVotePage> {
               ),
             ),
           ),
-          VerticalDivider(),
+          const VerticalDivider(),
           Expanded(
             child: Padding(
   padding: const EdgeInsets.all(16.0),
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         'Announcement of Voting Results',
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -338,27 +338,27 @@ class _CreateVotePageState extends State<CreateVotePage> {
           color: Colors.blue,
         ),
       ),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Options and Votes',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             FutureBuilder<List<Map<String, dynamic>>>(
               future: _fetchOptionVotes(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
@@ -377,12 +377,12 @@ class _CreateVotePageState extends State<CreateVotePage> {
                     children: [
                       Text(
                         'Total Votes for All Options: $totalVotes',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: snapshot.data!.map<Widget>((option) {
@@ -398,21 +398,21 @@ class _CreateVotePageState extends State<CreateVotePage> {
                                   children: [
                                     Text(
                                       option['option_value'] ?? 'Unknown Option',
-                                      style: TextStyle(fontSize: 18),
+                                      style: const TextStyle(fontSize: 18),
                                     ),
                                     Text(
                                       'Votes: ${option['vote_count'] ?? 0}',
-                                      style: TextStyle(fontSize: 18),
+                                      style: const TextStyle(fontSize: 18),
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
                                         _viewVotingParticipants(option['option_value']);
                                       },
-                                      child: Text('View Participants'),
+                                      child: const Text('View Participants'),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 // Add any other UI elements you need here
                               ],
                             ),
@@ -422,7 +422,7 @@ class _CreateVotePageState extends State<CreateVotePage> {
                     ],
                   );
                 } else {
-                  return Text(
+                  return const Text(
                     'No option votes found',
                     style: TextStyle(fontSize: 18),
                   );
@@ -432,7 +432,7 @@ class _CreateVotePageState extends State<CreateVotePage> {
           ],
         ),
       ),
-      SizedBox(height: 24),
+      const SizedBox(height: 24),
     ],
   ),
 ),
@@ -478,7 +478,7 @@ print("ssssssssssssssssssss: $userId");
               title: Text('Participants who voted for Option $optionValue'),
               content: Container(
                 width: double.maxFinite,
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                     maxHeight: 400), // Adjust the maximum height as needed
                 child: SingleChildScrollView(
                   child: Column(
@@ -486,13 +486,13 @@ print("ssssssssssssssssssss: $userId");
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text('Total Participants: ${participants.length}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       ListView.builder(
                         shrinkWrap: true,
                         physics:
-                            NeverScrollableScrollPhysics(), // Ensure the ListView does not scroll
+                            const NeverScrollableScrollPhysics(), // Ensure the ListView does not scroll
                         itemCount: participants.length,
                         itemBuilder: (context, index) {
                           final participant = participants[index];
@@ -511,7 +511,7 @@ print("ssssssssssssssssssss: $userId");
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Close'),
+                  child: const Text('Close'),
                 ),
               ],
             );

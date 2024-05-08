@@ -58,7 +58,7 @@ List<Map<String, dynamic>>? _enCoursMeetings = [];
         _preparationMeetings = [];
         _termineesMeetings = [];
 
-        allMeetings.forEach((meeting) {
+        for (var meeting in allMeetings) {
           final DateTime meetingDate = DateTime.parse(meeting['date']);
 
           if (meetingDate.isAfter(currentDate)) {
@@ -70,7 +70,7 @@ List<Map<String, dynamic>>? _enCoursMeetings = [];
           } else {
             _termineesMeetings.add(meeting);
           }
-        });
+        }
       });
     } else {
       throw Exception('Failed to fetch meetings');

@@ -39,6 +39,7 @@ dependencies:
   mailer: ^6.1.0
   shared_preferences: ^2.2.3
 
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -67,9 +68,12 @@ flutter:
      - assets/images/reunion.png
      - assets/images/vote.png
      - assets/images/bourse.jpg
-     - assets/images/frame3.png
      - assets/images/bib.png
      - assets/images/4.png
+     - assets/images/l1.png
+     - assets/images/frame5.png
+
+
 
 
 

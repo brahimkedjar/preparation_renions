@@ -1,58 +1,44 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gestion_reunion/home/sign_up.dart';
+import 'package:gestion_reunion/home/login.dart';
 import 'package:http/http.dart' as http;
-import 'home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  _LoginState createState() => _LoginState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
+  final nameController = TextEditingController();
+  final prenameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   bool obscureText = true;
-  bool isLoggedIn = false;
 
-  @override
-  void initState() {
-    super.initState();
-    checkLoginStatus();
-  }
-
-  Future<void> checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool loggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (loggedIn) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
-    }
-  }
-
-  Future<void> login(BuildContext context) async {
+  Future<void> signUp(BuildContext context) async {
+    String name = nameController.text.trim();
+    String prename = prenameController.text.trim();
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
+    if (name.isEmpty || prename.isEmpty || email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
+        const SnackBar(content: Text('Please fill in all fields')),
       );
       return;
     }
 
-    var url = Uri.parse('http://regestrationrenion.atwebpages.com/login_admin.php');
+    var url = Uri.parse('http://regestrationrenion.atwebpages.com/sign_up.php');
 
     try {
       var response = await http.post(
         url,
         body: {
+          'name': name,
+          'prename': prename,
           'email': email,
           'password': password,
         },
@@ -61,20 +47,19 @@ class _LoginState extends State<Login> {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isLoggedIn', true);
+        
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => const Login()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Invalid email or password')),
+            SnackBar(content: Text(jsonResponse['message'])),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to login. Please try again later.')),
+          const SnackBar(content: Text('Failed to sign up. Please try again later.')),
         );
       }
     } catch (e) {
@@ -88,7 +73,13 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Sign Up'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -132,12 +123,62 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(30.0),
                         color: const Color.fromRGBO(250, 166, 66, 0.6),
                       ),
-                      margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                      margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      child: TextFormField(
+                        controller: nameController,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: 'Name',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Sora',
+                            fontSize: 16,
+                          ),
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.person, color: Colors.white),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 20.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: const Color.fromRGBO(250, 166, 66, 0.6),
+                      ),
+                      margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      child: TextFormField(
+                        controller: prenameController,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: 'Prename',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Sora',
+                            fontSize: 16,
+                          ),
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.person, color: Colors.white),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 20.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: const Color.fromRGBO(250, 166, 66, 0.6),
+                      ),
+                      margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                       child: TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                          hintText: 'email',
+                          hintText: 'Email',
                           hintStyle: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Sora',
@@ -162,7 +203,7 @@ class _LoginState extends State<Login> {
                         controller: passwordController,
                         obscureText: obscureText,
                         decoration: InputDecoration(
-                          hintText: 'mot de passe',
+                          hintText: 'Password',
                           hintStyle: const TextStyle(
                             color: Colors.white,
                             fontFamily: 'Sora',
@@ -191,12 +232,6 @@ class _LoginState extends State<Login> {
                             vertical: 20.0,
                           ),
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
                       ),
                     ),
                     const SizedBox(height: 16.0),
@@ -209,31 +244,15 @@ class _LoginState extends State<Login> {
                       width: 180,
                       child: TextButton(
                         onPressed: () {
-                          login(context);
+                          signUp(context);
                         },
                         child: const Text(
-                          'Se connecter',
+                          'Sign Up',
                           style: TextStyle(
                             fontFamily: 'Sora',
                             fontSize: 16,
                             color: Colors.white,
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0), // Add some space
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignUp()), // Navigate to sign-up page
-                        );
-                      },
-                      child: const Text(
-                        'Vous n\'avez pas de compte ? Créez-en un ici',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 14,
                         ),
                       ),
                     ),
